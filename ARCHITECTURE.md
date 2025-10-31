@@ -22,15 +22,16 @@ This architecture intentionally mirrors Laravel’s logic but stays light and co
 vacation-portal/
 ├── app/
 │   ├── Controllers/
-│   ├── Models/
 │   ├── Database/
 │   ├── Helpers/
-│   └── Views/
+│   ├── Middleware/
+│   ├── Models/
 │   └── routes.php
 ├── bootstrap/
 │   ├── app.php
 │   └── helpers.php
 ├── public/
+│   ├── css/
 │   ├── index.php
 │   └── .htaccess
 ├── database/
@@ -41,7 +42,7 @@ vacation-portal/
 │   ├── Models/
 │   ├── Helpers/
 │   └── Controllers/
-└── vendor/
+└── views/
 ```
 
 ---
@@ -55,7 +56,7 @@ The application separates **`public/index.php`** (front controller) from **`boot
 - **`bootstrap/app.php`** handles initialization: environment variables, helpers, dependencies, and routes.  
 - **`public/index.php`** handles execution: it loads the bootstrap file and runs the router.  
 
-This structure improves maintainability, keeps the entry point minimal, and allows future extension (e.g. middlewares, environment-specific setups).
+This structure improves maintainability, keeps the entry point minimal, and allows future extension (e.g. dependency injection, environment-specific setups).
 
 ---
 
