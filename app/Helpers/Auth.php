@@ -19,7 +19,11 @@ class Auth
     public static function logout(): void
     {
         self::start();
-        session_destroy();
+
+        $_SESSION = [];
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
     }
 
     public static function user(): mixed
