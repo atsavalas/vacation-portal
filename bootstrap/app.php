@@ -37,4 +37,9 @@ $router = new Router();
 // Define routes
 require __DIR__ . '/../app/routes.php';
 
+// Handle method spoofing (_method override)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method'])) {
+    $_SERVER['REQUEST_METHOD'] = strtoupper($_POST['_method']);
+}
+
 return $router;
