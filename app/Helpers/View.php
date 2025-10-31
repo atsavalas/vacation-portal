@@ -20,6 +20,7 @@ class View
             // globals for accessing across twig template files
             self::$twig->addGlobal('app_name', env('APP_NAME'));
             self::$twig->addGlobal('flash', $_SESSION['flash'] ?? []);
+            self::$twig->addGlobal('auth_user', $_SESSION['user'] ?? []);
         }
 
         echo self::$twig->render($template, $data);
