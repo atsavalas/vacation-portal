@@ -24,5 +24,8 @@ class View
         }
 
         echo self::$twig->render($template, $data);
+
+        // clear flashes once rendered
+        unset($_SESSION['flash']);
     }
 }
