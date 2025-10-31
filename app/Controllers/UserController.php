@@ -21,4 +21,11 @@ class UserController extends BaseController
         view('users/index', ['users' => $users]);
     }
 
+    public function delete($id): void
+    {
+        $this->users->delete($id);
+        setFlash('success', 'User deleted');
+        redirect('/users');
+    }
+
 }
