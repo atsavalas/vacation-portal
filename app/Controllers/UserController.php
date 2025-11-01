@@ -4,14 +4,18 @@ namespace App\Controllers;
 
 use App\Middleware\Auth;
 use App\Models\User;
+use App\Validators\UserValidator;
 
 class UserController extends BaseController
 {
     private $users;
 
+    private $validator;
+
     public function __construct()
     {
         $this->users = new User();
+        $this->validator = new UserValidator();
         Auth::handle();
     }
 
@@ -28,22 +32,26 @@ class UserController extends BaseController
 
     public function store(): void
     {
-        $name = clean($_POST['name'] ?? '');
-        $employee_code = clean($_POST['employee_code'] ?? '');
-        $email = clean($_POST['email'] ?? '');
-        $username = clean($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
-        $role = clean($_POST['role'] ?? '');
+        $data = [
+            'name'          => clean($_POST['name'] ?? ''),
+            'email'         => clean($_POST['email'] ?? ''),
+            'username'      => clean($_POST['username'] ?? ''),
+            'employee_code' => clean($_POST['employee_code'] ?? ''),
+            'password'      => $_POST['password'] ?? '',
+            'role'          => clean($_POST['role'] ?? 'employee'),
+        ];
 
-        if (!$name || !$employee_code || !$email || !$username || !$password || !$role) {
-            setFlash('error', 'All fields are required.');
+        $this->validator->validate($data);
+
+        if (!$this->validator->isValid()) {
+            setFlash('error', implode('<br>', $this->validator->errors()));
             redirect('/users/create');
         }
 
         $userExists = $this->users->where([
             'OR' => [
-                'username' => $username,
-                'email'    => $email
+                'username' => $data['username'],
+                'email'    => $data['email'],
             ]
         ], true);
 
@@ -52,14 +60,8 @@ class UserController extends BaseController
             redirect('/users/create');
         }
 
-        $this->users->create([
-            'name'          => $name,
-            'employee_code' => $employee_code,
-            'email'         => $email,
-            'username'      => $username,
-            'password'      => password_hash($password, PASSWORD_BCRYPT),
-            'role'          => $role
-        ]);
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $this->users->create($data);
 
         setFlash('success', 'User created successfully.');
         redirect('/users');
