@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Middleware\Auth;
+use App\Middleware\Auth as MiddlewareAuth;
 use App\Models\User;
 use App\Validators\UserValidator;
 
@@ -14,9 +14,9 @@ class UserController extends BaseController
 
     public function __construct()
     {
+        MiddlewareAuth::handle();
         $this->users = new User();
         $this->validator = new UserValidator();
-        Auth::handle();
     }
 
     public function index(): void
