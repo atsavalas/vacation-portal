@@ -118,6 +118,10 @@ class UserController extends BaseController
             redirect("/users/{$id}/edit");
         }
 
+        if ($data['password']) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $this->users->update($id, $data);
 
         setFlash('success', 'User updated.');
