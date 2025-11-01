@@ -1,0 +1,14 @@
+{% macro validationScript(form_selector='form') %}
+    <script>
+        (() => {
+            const form = document.querySelector('{{ form_selector }}');
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            });
+        })();
+    </script>
+{% endmacro %}

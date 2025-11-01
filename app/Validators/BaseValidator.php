@@ -8,9 +8,9 @@ abstract class BaseValidator
 
     abstract protected function rules(): array;
 
-    public function validate(array $data): bool
+    public function validate(array $data, string $mode = 'create'): bool
     {
-        $rules = $this->rules();
+        $rules = $this->rules($mode);
         $this->errors = [];
 
         foreach ($rules as $field => $rule) {

@@ -15,9 +15,11 @@
             </a>
         </div>
 
-        {% if flash.success %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ flash.success }}
+        {% if flash.success or flash.error %}
+            <div class="alert alert-dismissible fade show
+              {{ flash.success ? 'alert-success' : 'alert-danger' }}"
+                 role="alert">
+                {{ flash.success ?? flash.error }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endif %}
