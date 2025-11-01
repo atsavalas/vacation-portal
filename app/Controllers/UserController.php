@@ -52,11 +52,12 @@ class UserController extends BaseController
             'OR' => [
                 'username' => $data['username'],
                 'email'    => $data['email'],
+                'employee_code' => $data['employee_code'],
             ]
         ], true);
 
         if ($userExists) {
-            setFlash('error', 'A user with this username or email already exists.');
+            setFlash('error', 'A user with this username, email, or employee code already exists.');
             redirect('/users/create');
         }
 
