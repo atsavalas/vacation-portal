@@ -12,6 +12,8 @@ $router->post('/login', route(AuthController::class, 'login'));
 $router->post('/logout', route(AuthController::class, 'logout'));
 
 $router->get('/users', route(UserController::class, 'index'));
+$router->get('/users/create', route(UserController::class, 'create'));
+$router->post('/users/create', route(UserController::class, 'store'));
 $router->delete('/users/{id}/delete', route(UserController::class, 'delete'));
 
 
