@@ -1,5 +1,7 @@
 {% extends "layout.twig" %}
 
+{% import 'macros/forms.twig' as forms %}
+
 {% block title %}Login | {{ app_name }} {% endblock %}
 
 {% block content %}
@@ -51,19 +53,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        // Handle login form validation.
-        (() => {
-            const form = document.getElementById('login-form');
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            });
-        })();
-    </script>
+    {{ forms.validationScript('#login-form') }}
 {% endblock %}
 
 
