@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AuthController;
+use App\Controllers\RequestController;
 use App\Controllers\UserController;
 use App\Helpers\Auth;
 use Bramus\Router\Router;
@@ -18,6 +19,7 @@ $router->get('/users/{id}/edit', route(UserController::class, 'edit'));
 $router->put('/users/{id}/update', route(UserController::class, 'update'));
 $router->delete('/users/{id}/delete', route(UserController::class, 'delete'));
 
+$router->get('/requests', route(RequestController::class, 'index'));
 
 $router->get('/welcome', function() {
     view('welcome', ['user' => Auth::user()]);
