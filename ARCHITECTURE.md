@@ -2,9 +2,11 @@
 
 ## Introduction
 
-The **Vacation Portal** is a lightweight, framework-free PHP MVC web application built to demonstrate clean architectural principles and Laravel-style conventions without relying on full frameworks. 
+The **Vacation Portal** is a lightweight, framework-free PHP MVC web application built to demonstrate clean architectural 
+principles and Laravel-style conventions without relying on full frameworks. 
 
-It uses **Bramus Router**, **Twig**, and **Medoo** as its core dependencies, combined with small abstractions for routing, rendering, database access, and authentication.
+It uses **Bramus Router**, **Twig**, and **Medoo** as its core dependencies, combined with small abstractions for routing, 
+rendering, database access, and authentication.
 
 The design philosophy focuses on **clarity, reusability, and security**:
 - Framework-like structure for maintainability.
@@ -12,7 +14,12 @@ The design philosophy focuses on **clarity, reusability, and security**:
 - Consistent naming and autoloading (PSR-4).
 - Clean separation between layers: Routing → Controller → Model → View.
 
-This architecture intentionally mirrors Laravel’s logic but stays light and compliant with the assignment’s *“no framework”* restriction.
+This architecture intentionally mirrors Laravel’s logic but stays light and compliant with the assignment’s *“no framework”* 
+restriction.
+
+While Dockerization and static analysis tools (like PHPStan or PHP_CodeSniffer) were considered, the focus of this 
+implementation was on building a clean, reusable microframework-like architecture with unit tests, security best practices, 
+and maintainable code structure.
 
 ---
 
@@ -51,12 +58,14 @@ vacation-portal/
 
 ### Why Separate `public/index.php` and `bootstrap/app.php`
 
-The application separates **`public/index.php`** (front controller) from **`bootstrap/app.php`** to mirror modern frameworks like Laravel and improve clarity between execution and initialization.  
+The application separates **`public/index.php`** (front controller) from **`bootstrap/app.php`** to mirror modern 
+frameworks like Laravel and improve clarity between execution and initialization.  
 
 - **`bootstrap/app.php`** handles initialization: environment variables, helpers, dependencies, and routes.  
 - **`public/index.php`** handles execution: it loads the bootstrap file and runs the router.  
 
-This structure improves maintainability, keeps the entry point minimal, and allows future extension (e.g. dependency injection, environment-specific setups).
+This structure improves maintainability, keeps the entry point minimal, and allows future extension (e.g. dependency 
+injection, environment-specific setups).
 
 ---
 
@@ -68,7 +77,8 @@ The project uses **Bramus Router** for lightweight and expressive routing.
 $router->get('/login', route(AuthController::class, 'login'));
 ```
 
-Because the callable syntax (`[Class::class, 'method']`) caused type resolution issues, a custom **`route()` helper** was introduced to preserve Laravel-like readability.
+Because the callable syntax (`[Class::class, 'method']`) caused type resolution issues, a custom **`route()` helper** 
+was introduced to preserve Laravel-like readability.
 
 ---
 
@@ -78,9 +88,11 @@ Because the callable syntax (`[Class::class, 'method']`) caused type resolution 
 
 The app uses a lightweight **`DB` class** (`App\Database\DB`) that manages a singleton Medoo instance.  
 
-It centralizes connection logic, reads credentials from environment variables, and provides a clean, reusable database interface for models.
+It centralizes connection logic, reads credentials from environment variables, and provides a clean, reusable database 
+interface for models.
 
-By isolating the connection in one class, the design avoids repetitive setup, simplifies testing, and maintains a clear separation between data access and business logic.
+By isolating the connection in one class, the design avoids repetitive setup, simplifies testing, and maintains a clear 
+separation between data access and business logic.
 
 ---
 
@@ -135,17 +147,12 @@ This avoids passing configuration data through every controller, keeping the tem
 
 ### View Rendering and Layouts
 
-All views extend a base layout (`layouts/base.twig`) which provides shared structure (header, navigation, flash messages, footer).
+All views extend a base layout (`layout.twig`) which provides shared structure (header, navigation, flash messages, 
+footer).
 
-Specific pages such as login, dashboard, and approval pages extend this base file for consistent styling. Views are organized by domain:  
-```
-views/
-├── layouts/
-│   └── base.twig
-├── auth/
-│   └── login.twig
-└── dashboard/
-```
+Specific pages such as login, user/request dashboards, and form pages extend this base file for consistent styling. 
+
+Views are organized by domain and also a macro has been created for reusability in front-end form validation.
 
 ---
 
