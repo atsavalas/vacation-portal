@@ -68,4 +68,33 @@ class RequestController extends BaseController
         setFlash('success', 'Vacation request submitted.');
         redirect('/requests');
     }
+
+    public function delete($id): void
+    {
+        $request = $this->requests->find($id);
+
+        if (!$request) {
+            setFlash('error', 'Vacation request not found.');
+            redirect('/requests');
+        }
+
+        // Allow deletion if pending request belongs to auth user
+        $isOwner = $request['user_id'] === $this->user['id'];
+
+        if (!$isOwner) {
+            setFlash('error', 'You are not allowed to delete this vacation request.');
+            redirect('/requests');
+        }
+
+        if ($isOwner && $request['status'] !== 'pending') {
+            setFlash('error', 'You can only delete pending vacation requests.');
+            redirect('/requests');
+        }
+
+        $this->requests->delete($id);
+
+        setFlash('success', 'Vacation request deleted.');
+        redirect('/requests');
+    }
+
 }
