@@ -26,6 +26,8 @@ $router->delete('/users/{id}/delete', route(UserController::class, 'delete'));
 $router->get('/requests', route(RequestController::class, 'index'));
 $router->get('/requests/create', route(RequestController::class, 'create'));
 $router->post('/requests/create', route(RequestController::class, 'store'));
+$router->post('/requests/{id}/approve', route(RequestController::class, 'approve'));
+$router->post('/requests/{id}/reject', route(RequestController::class, 'reject'));
 $router->delete('/requests/{id}/delete', route(RequestController::class, 'delete'));
 
 $router->get('/welcome', function() {

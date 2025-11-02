@@ -76,7 +76,8 @@
                                 {% elseif auth_user.role == 'employee' %}
                                     {% if req.status == 'pending' %}
 
-                                        <form action="/requests/{{ req.id }}/delete" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                        <form action="/requests/{{ req.id }}/delete" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Are you sure?');">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-trash"></i> Delete

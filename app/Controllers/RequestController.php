@@ -71,6 +71,23 @@ class RequestController extends BaseController
         redirect('/requests');
     }
 
+    public function approve($id): void
+    {
+        $this->checkRequestBeforeProcessing($id);
+        $this->requests->update($id, ['status' => 'approved']);
+        setFlash('success', 'Vacation request approved.');
+        redirect('/requests');
+    }
+
+
+    public function reject($id): void
+    {
+        $this->checkRequestBeforeProcessing($id);
+        $this->requests->update($id, ['status' => 'rejected']);
+        setFlash('success', 'Vacation request rejected.');
+        redirect('/requests');
+    }
+
     public function delete($id): void
     {
         $request = $this->requests->find($id);
@@ -97,6 +114,32 @@ class RequestController extends BaseController
 
         setFlash('success', 'Vacation request deleted.');
         redirect('/requests');
+    }
+
+    private function checkRequestBeforeProcessing($id): void
+    {
+        // Only managers can approve/reject
+        if ($this->user['role'] !== 'manager') {
+            setFlash('error', 'You are not authorized to perform this action.');
+            redirect('/requests');
+        }
+
+        $request = $this->requests->find($id);
+
+        if (!$request) {
+            setFlash('error', 'Vacation request not found.');
+            redirect('/requests');
+        }
+
+        if ($request['status'] !== 'pending') {
+            setFlash('error', 'This request has already been processed.');
+            redirect('/requests');
+        }
+
+        if ($request['user_id'] === $this->user['id']) {
+            setFlash('error', 'You are not allowed to perform this action.');
+            redirect('/requests');
+        }
     }
 
 }
