@@ -50,7 +50,15 @@ class RequestController extends BaseController
         $this->validator->validate($data);
 
         if (!$this->validator->isValid()) {
-            setFlash('error', implode('<br>', $this->validator->errors()));
+            $errors = [];
+            foreach ($this->validator->errors() as $fieldErrors) {
+                if (is_array($fieldErrors)) {
+                    $errors = array_merge($errors, $fieldErrors);
+                } else {
+                    $errors[] = $fieldErrors;
+                }
+            }
+            setFlash('error', implode('<br>', $errors));
             redirect('/requests/create');
         }
 
