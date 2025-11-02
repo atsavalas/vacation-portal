@@ -24,8 +24,7 @@ class AuthController extends BaseController
 
             if ($user !== null && password_verify($password, $user['password'])) {
                 Auth::login($user);
-                //TODO: check roles and handle redirect - for now just test
-                redirect('/welcome');
+                Auth::redirectByRole();
             } else {
                 setFlash('error', 'Invalid credentials.');
             }

@@ -3,18 +3,26 @@
 namespace App\Controllers;
 
 use App\Middleware\Auth as MiddlewareAuth;
+use App\Middleware\Role as MiddlewareRole;
 use App\Models\User;
 use App\Validators\UserValidator;
 
 class UserController extends BaseController
 {
-    private $users;
+    private User $users;
 
-    private $validator;
+    private UserValidator $validator;
 
     public function __construct()
     {
         MiddlewareAuth::handle();
+
+        if (!MiddlewareRole::handle(['manager'])) {
+            setFlash('error', 'You are not authorized to access this resource.');
+            redirect('/');
+            exit;
+        }
+
         $this->users = new User();
         $this->validator = new UserValidator();
     }

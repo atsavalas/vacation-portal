@@ -43,4 +43,19 @@ class Auth
             session_start();
         }
     }
+
+    public static function redirectByRole(): void
+    {
+        $user = self::user();
+
+        if (!$user) {
+            redirect('/login');
+        }
+
+        match ($user['role']) {
+            'manager'  => redirect('/users'),
+            'employee' => redirect('/requests'),
+            default    => redirect('/'),
+        };
+    }
 }

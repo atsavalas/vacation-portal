@@ -4,20 +4,22 @@ namespace App\Controllers;
 
 use App\Helpers\Auth;
 use App\Middleware\Auth as MiddlewareAuth;
+use App\Middleware\Role as MiddlewareRole;
 use App\Models\Request;
 use App\Validators\RequestValidator;
 
 class RequestController extends BaseController
 {
-    private $user;
+    private mixed $user;
 
-    private $requests;
+    private Request $requests;
 
-    private $validator;
+    private RequestValidator $validator;
 
     public function __construct()
     {
         MiddlewareAuth::handle();
+        MiddlewareRole::handle(['manager', 'employee']);
         $this->requests = new Request();
         $this->validator = new RequestValidator();
         $this->user = Auth::user();
