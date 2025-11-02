@@ -2,14 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Helpers\Auth;
 use App\Middleware\Auth as MiddlewareAuth;
 use App\Middleware\Role as MiddlewareRole;
+use App\Models\Request;
 use App\Models\User;
 use App\Validators\UserValidator;
 
 class UserController extends BaseController
 {
     private User $users;
+
+    private Request $requests;
 
     private UserValidator $validator;
 
@@ -24,13 +28,18 @@ class UserController extends BaseController
         }
 
         $this->users = new User();
+        $this->requests = new Request();
         $this->validator = new UserValidator();
     }
 
     public function index(): void
     {
         $users = $this->users->all();
-        view('users/index', ['users' => $users]);
+        $totalPendingRequests = $this->requests->count([
+            'status' => 'pending',
+            'user_id[!]' => Auth::user()['id']
+        ]);
+        view('users/index', ['users' => $users, 'totalPendingRequests' => $totalPendingRequests]);
     }
 
     public function create(): void

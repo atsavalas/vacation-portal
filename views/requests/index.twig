@@ -59,17 +59,21 @@
                             </td>
                             <td class="text-end">
                                 {% if auth_user.role == 'manager' %}
-                                    {% if req.status == 'pending' %}
-                                        <form action="/requests/{{ req.id }}/approve" method="POST" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-check-circle"></i> Approve
-                                            </button>
-                                        </form>
-                                        <form action="/requests/{{ req.id }}/reject" method="POST" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-x-circle"></i> Reject
-                                            </button>
-                                        </form>
+                                    {% if req.user_id != auth_user.id %}
+                                        {% if req.status == 'pending' %}
+                                            <form action="/requests/{{ req.id }}/approve" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-check-circle"></i> Approve
+                                                </button>
+                                            </form>
+                                            <form action="/requests/{{ req.id }}/reject" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-x-circle"></i> Reject
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <small class="text-muted">No actions</small>
+                                        {% endif %}
                                     {% else %}
                                         <small class="text-muted">No actions</small>
                                     {% endif %}
@@ -103,17 +107,26 @@
         </div>
     </div>
 
-
 {% endblock %}
 
 {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <script>
         (() => {
-            const dataTable = new simpleDatatables.DataTable("#requests-table", {
+            const options = {
                 searchable: true,
                 fixedHeight: true,
-            })
+                sortable: true,
+                perPage: 25,
+            };
+
+            {% if auth_user.role == 'manager' %}
+            options.columns = [
+                { select: 5, sort: "asc" }
+            ];
+            {% endif %}
+
+            const dataTable = new simpleDatatables.DataTable("#requests-table", options)
         })();
     </script>
 {% endblock %}

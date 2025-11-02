@@ -33,7 +33,11 @@ class RequestController extends BaseController
             $requests = $this->requests->where(['user_id' => $this->user['id']]);
         }
 
-        view('requests/index', ['requests' => $requests]);
+        $totalPendingRequests = $this->requests->count([
+            'status' => 'pending',
+            'user_id[!]' => $this->user['id']
+        ]);
+        view('requests/index', ['requests' => $requests, 'totalPendingRequests' => $totalPendingRequests]);
     }
 
     public function create(): void

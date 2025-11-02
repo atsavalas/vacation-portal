@@ -59,4 +59,9 @@ abstract class BaseModel
     {
         return $this->db()->delete($this->table, ['id' => $id])->rowCount() > 0;
     }
+
+        public function count(array $conditions): int
+        {
+            return $this->db()->count($this->table, $conditions);
+        }
 }
