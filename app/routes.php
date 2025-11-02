@@ -20,6 +20,8 @@ $router->put('/users/{id}/update', route(UserController::class, 'update'));
 $router->delete('/users/{id}/delete', route(UserController::class, 'delete'));
 
 $router->get('/requests', route(RequestController::class, 'index'));
+$router->get('/requests/create', route(RequestController::class, 'create'));
+$router->post('/requests/create', route(RequestController::class, 'store'));
 
 $router->get('/welcome', function() {
     view('welcome', ['user' => Auth::user()]);

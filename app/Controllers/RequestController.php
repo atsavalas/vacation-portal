@@ -34,4 +34,30 @@ class RequestController extends BaseController
         view('requests/index', ['requests' => $requests]);
     }
 
+    public function create(): void
+    {
+        view('requests/create');
+    }
+
+    public function store(): void
+    {
+        $data = [
+            'start_date' => $_POST['start_date'] ?? '',
+            'end_date'   => $_POST['end_date'] ?? '',
+            'reason'     => clean($_POST['reason'] ?? ''),
+        ];
+
+        $this->validator->validate($data);
+
+        if (!$this->validator->isValid()) {
+            setFlash('error', implode('<br>', $this->validator->errors()));
+            redirect('/requests/create');
+        }
+
+        $data['user_id'] = $this->user['id'];
+        $this->requests->create($data);
+
+        setFlash('success', 'Vacation request submitted.');
+        redirect('/requests');
+    }
 }

@@ -12,3 +12,37 @@
         })();
     </script>
 {% endmacro %}
+
+{% macro validationWithDatesScript(form_selector='form') %}
+    <script>
+        (() => {
+            const form = document.querySelector('{{ form_selector }}');
+            if (!form) return;
+
+            form.addEventListener('submit', event => {
+                const startInput = form.querySelector('#start_date');
+                const endInput = form.querySelector('#end_date');
+
+                // clear previous custom validity message
+                if (endInput) endInput.setCustomValidity('');
+
+                // custom date logic
+                if (startInput && endInput && startInput.value && endInput.value) {
+                    const start = new Date(startInput.value);
+                    const end = new Date(endInput.value);
+
+                    if (end < start) {
+                        endInput.setCustomValidity('End date must be after start date.');
+                    }
+                }
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+        })();
+    </script>
+{% endmacro %}
