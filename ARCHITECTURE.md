@@ -17,9 +17,9 @@ The design philosophy focuses on **clarity, reusability, and security**:
 This architecture intentionally mirrors Laravel’s logic but stays light and compliant with the assignment’s *“no framework”* 
 restriction.
 
-While Dockerization and static analysis tools (like PHPStan or PHP_CodeSniffer) were considered, the focus of this 
-implementation was on building a clean, reusable microframework-like architecture with unit tests, security best practices, 
-and maintainable code structure.
+While static analysis tools (like PHPStan or PHP_CodeSniffer) were considered, the focus of this implementation was on 
+building a clean, reusable microframework-like architecture with unit tests, security best practices, and maintainable 
+code structure.
 
 ---
 

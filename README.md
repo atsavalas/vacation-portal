@@ -13,39 +13,34 @@ For the complete architecture and design info, please see the [ARCHITECTURE.md](
 git clone https://github.com/atsavalas/vacation-portal.git
 ```
 
-#### 2. Install PHP dependencies
+#### 2. Create your environment file
 ```bash
 cd vacation-portal
-composer install
-```
-
-#### 3. Create your environment file
-```bash
 cp .env.example .env
 ```
-Then edit the .env file to match your local MySQL credentials.
+The `.env` file contains database connection details. For Docker, the defaults should already work
 
-Suggested DB specs:
-- Name: vacation_portal
-- Charset: utf8mb4
-- Collation: utf8mb4_unicode_ci
-
+#### 3. Build and start the containers
+```bash
+docker-compose up --build
+```
 #### 4. Run migrations and seed demo data
 ```bash
-php database/migrate.php
-
+docker exec -it vacation_portal_app php database/migrate.php
 ```
+
+This will create all required tables and seed demo users and vacation requests.
+
 #### 5. (Optional) Run the test suite
 ```bash
-vendor/bin/phpunit tests/Helpers/AuthTest.php  
-vendor/bin/phpunit tests/Models/UserTest.php  
-vendor/bin/phpunit tests/Models/RequestTest.php
+docker exec -it vacation_portal_app ./vendor/bin/phpunit tests/Helpers/AuthTest.php  
+docker exec -it vacation_portal_app ./vendor/bin/phpunit tests/Models/UserTest.php  
+docker exec -it vacation_portal_app ./vendor/bin/phpunit tests/Models/RequestTest.php
 ```
 
-#### 6. Start the local development server
-```bash
-php -S localhost:8000 -t public
-```
+#### 6. Access the application
+Open your browser and visit: </br>
+[http://localhost:8000](http://localhost:8000)
 
 ## Demo Credentials
 
